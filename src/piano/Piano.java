@@ -22,6 +22,8 @@ public class Piano {
 
     public void handleMouseInput(int mouseX, int mouseY) {
         PianoKey key = (PianoKey) pianoRepresentation.getObjectAt(mouseX, mouseY);
-        key.playNote(127);
+        if (key != null) {
+            key.playNote(127);
+        }
     }
 }

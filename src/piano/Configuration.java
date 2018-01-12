@@ -14,9 +14,7 @@ public final class Configuration {
     public static final int BLACK_PIANO_KEY_SIZE_Y = 60;
     // octave
     public static final int OCTAVE_LENGTH = 7 * WHITE_PIANO_KEY_SIZE_X;
-    public enum Octave {
-        CONTRA,
-        GREAT,
-        SMALL
-    }
+    public static final int OCTAVE_CONTRA = 3;
+    public static final int OCTAVE_GREAT = 4;
+    public static final int OCTAVE_SMALL = 5;
 }

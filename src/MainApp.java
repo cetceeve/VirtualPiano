@@ -39,7 +39,6 @@ public class MainApp extends GraphicsApp {
         int mouseX = event.getX();
         int mouseY = event.getY();
         piano.handleMouseInput(mouseX, mouseY);
-        //println("Clicked at: " + mouseX + "/" + mouseY);
     }
 
 
