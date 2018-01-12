@@ -1,29 +1,68 @@
 package piano;
 
 import de.mi.ur.midi.Note;
-import de.ur.mi.graphics.Color;
 import de.ur.mi.graphics.Compound;
-import de.ur.mi.graphics.Rect;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class PianoBuilder {
+    private Compound compound;
 
     public PianoBuilder() {}
 
     public Compound newPiano() {
-        WhitePianoKey keys[] = new WhitePianoKey[7];
-        Compound compound = new Compound();
-        for (int i = 0; i < keys.length; i++) {
-            keys[i] = new WhitePianoKey(Note.C_CONTRA, 10 + i * Configuration.WHITE_PIANO_KEY_SIZE_X, 10);
+        compound = new Compound();
+        ArrayList<PianoKey> keys = new ArrayList<>();
+        for (int i = 0; i < Configuration.NUM_OF_OCTAVES; i++) {
+            Collections.addAll(keys, nextOctave(10 + i * Configuration.OCTAVE_LENGTH));
         }
-        keys[1].setNote(Note.D_CONTRA);
-        keys[2].setNote(Note.E_CONTRA);
-        keys[3].setNote(Note.F_CONTRA);
-        keys[4].setNote(Note.G_CONTRA);
-        keys[5].setNote(Note.A_CONTRA);
-        keys[6].setNote(Note.H_CONTRA);
-        for (PianoKey key: keys) {
-            compound.add(key);
-        }
+        setNotes(keys);
         return compound;
+    }
+
+    private void setNotes(ArrayList<PianoKey> keys) {
+        Note noteValues[] = Note.values();
+        for (int i = 0; i < keys.size(); i++) {
+            keys.get(i).setNote(noteValues[i]);
+        }
+    }
+
+    private PianoKey[] nextOctave(int startPosition) {
+        PianoKey octave[] = new PianoKey[12];
+        sortWhiteKeysIntoOctaveArray(octave, createWhiteKeys(startPosition));
+        for (int i = 0; i < 11; i++) {
+            if (octave[i] != null && i != 4) {
+                octave[i + 1] = createBlackKey(octave[i]);
+                i++;
+            }
+        }
+        return octave;
+    }
+
+    private WhitePianoKey[] createWhiteKeys(int startPosition) {
+        WhitePianoKey whitePianoKeys[] = new WhitePianoKey[7];
+        for (int i = 0; i < whitePianoKeys.length; i++) {
+            whitePianoKeys[i] = new WhitePianoKey(Note.C_CONTRA, startPosition + i * Configuration.WHITE_PIANO_KEY_SIZE_X, 10);
+            compound.add(whitePianoKeys[i]);
+        }
+        return whitePianoKeys;
+    }
+
+    private BlackPianoKey createBlackKey(PianoKey whiteParentKey) {
+        int posX = (int)whiteParentKey.getRightBorder() - Configuration.BLACK_PIANO_KEY_SIZE_X / 2;
+        BlackPianoKey blackPianoKey = new BlackPianoKey(Note.C_SHARP_CONTRA, posX, 10);
+        compound.add(blackPianoKey);
+        return blackPianoKey;
+    }
+
+    private void sortWhiteKeysIntoOctaveArray(PianoKey[] keys, WhitePianoKey[] whiteKeys) {
+        keys[0] = whiteKeys[0];
+        keys[2] = whiteKeys[1];
+        keys[4] = whiteKeys[2];
+        keys[5] = whiteKeys[3];
+        keys[7] = whiteKeys[4];
+        keys[9] = whiteKeys[5];
+        keys[11] = whiteKeys[6];
     }
 }
