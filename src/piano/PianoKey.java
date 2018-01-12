@@ -11,10 +11,12 @@ import javax.sound.midi.MidiUnavailableException;
 public class PianoKey extends Rect {
     private Synthesizer synthesizer;
     private Note note;
+    private Color keyColor;
 
     public PianoKey(Note note, int x, int y, int width, int height, Color color) {
         super(x, y, width, height, color);
         this.note = note;
+        this.keyColor = color;
         try {
             synthesizer = new Synthesizer();
         } catch (MidiUnavailableException e){
@@ -33,5 +35,9 @@ public class PianoKey extends Rect {
 
     public void setNote(Note note) {
         this.note = note;
+    }
+
+    public void resetColor() {
+        this.setColor(keyColor);
     }
 }

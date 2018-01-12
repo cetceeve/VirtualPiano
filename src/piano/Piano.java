@@ -6,14 +6,11 @@ import de.ur.mi.graphics.Rect;
 
 public class Piano {
     private Compound pianoRepresentation;
+    private PianoKey currentKey;
 
     public Piano() {
         PianoBuilder pianoBuilder = new PianoBuilder();
         pianoRepresentation = pianoBuilder.newPiano();
-    }
-
-    public void update() {
-
     }
 
     public void draw() {
@@ -21,9 +18,17 @@ public class Piano {
     }
 
     public void handleMouseInput(int mouseX, int mouseY) {
-        PianoKey key = (PianoKey) pianoRepresentation.getObjectAt(mouseX, mouseY);
-        if (key != null) {
-            key.playNote(127);
+        currentKey = (PianoKey) pianoRepresentation.getObjectAt(mouseX, mouseY);
+        if (currentKey != null) {
+            //currentKey.playNote(127);
+            currentKey.setColor(Color.GREEN);
+        }
+    }
+
+    public void handleMouseRelease() {
+        if (currentKey != null) {
+            currentKey.playNote(127);
+            currentKey.resetColor();
         }
     }
 }

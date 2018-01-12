@@ -41,6 +41,9 @@ public class MainApp extends GraphicsApp {
         piano.handleMouseInput(mouseX, mouseY);
     }
 
-
+    @Override
+    public void mouseReleased(MouseEvent event) {
+        piano.handleMouseRelease();
+    }
 
 }
