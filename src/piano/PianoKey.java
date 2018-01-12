@@ -11,7 +11,6 @@ import javax.sound.midi.MidiUnavailableException;
 public class PianoKey extends Rect {
     private Synthesizer synthesizer;
     private Note note;
-    private int octave = Configuration.OCTAVE_CONTRA;
 
     public PianoKey(Note note, int x, int y, int width, int height, Color color) {
         super(x, y, width, height, color);
@@ -26,7 +25,7 @@ public class PianoKey extends Rect {
 
     public void playNote(int velocity) {
         try {
-            synthesizer.playNote(note, velocity, octave);
+            synthesizer.playNote(note, velocity);
         } catch (Synthesizer.NoteOutOfBoundsException e){
             e.printStackTrace();
         }
@@ -34,17 +33,5 @@ public class PianoKey extends Rect {
 
     public void setNote(Note note) {
         this.note = note;
-        octaveResolver();
-    }
-
-    private void octaveResolver() {
-        int noteAsInt = note.ordinal();
-        if (noteAsInt < 12) {
-            octave = Configuration.OCTAVE_CONTRA;
-        } else if (noteAsInt < 24) {
-            octave = Configuration.OCTAVE_GREAT;
-        } else {
-            octave = Configuration.OCTAVE_SMALL;
-        }
     }
 }
