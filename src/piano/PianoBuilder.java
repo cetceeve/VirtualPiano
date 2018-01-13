@@ -12,18 +12,21 @@ public class PianoBuilder {
 
     public PianoBuilder() {}
 
-    public Compound newPiano() {
+    public void newPiano() {
         compound = new Compound();
         virtualPiano = new ArrayList<>();
         for (int i = 0; i < Configuration.NUM_OF_OCTAVES; i++) {
             Collections.addAll(virtualPiano, nextOctave(10 + i * Configuration.OCTAVE_LENGTH));
         }
         setNotes(virtualPiano);
-        return compound;
     }
 
     public ArrayList<PianoKey> getVirtualPiano() {
         return virtualPiano;
+    }
+
+    public Compound getPianoRepresentation() {
+        return compound;
     }
 
     private void setNotes(ArrayList<PianoKey> keys) {

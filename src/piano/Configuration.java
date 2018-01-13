@@ -6,6 +6,7 @@ public final class Configuration {
 
     //piano
     public static final int NUM_OF_OCTAVES = 3;
+    public static final int STARTING_OCTAVE = 1;
     // white key
     public static final int WHITE_PIANO_KEY_SIZE_X = 40;
     public static final int WHITE_PIANO_KEY_SIZE_Y = 110;

@@ -3,20 +3,27 @@ package piano;
 import de.mi.ur.midi.Note;
 import de.ur.mi.graphics.Color;
 import de.ur.mi.graphics.Compound;
+import de.ur.mi.graphicsapp.GraphicsApp;
+import recorder.Recorder;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-public class Piano {
+public class Piano{
     private Compound pianoRepresentation;
     private ArrayList<PianoKey> virtualPiano;
     private ArrayList<Integer> pressedKeys;
-    private int currentOctave = 1;
+    private int currentOctave = Configuration.STARTING_OCTAVE;
     private PianoKey currentKey;
 
-    public Piano() {
+    private Recorder recorder;
+    private long timeStamp = System.currentTimeMillis();
+
+    public Piano(Recorder recorder) {
+        this.recorder = recorder;
         PianoBuilder pianoBuilder = new PianoBuilder();
-        pianoRepresentation = pianoBuilder.newPiano();
+        pianoBuilder.newPiano();
+        pianoRepresentation = pianoBuilder.getPianoRepresentation();
         virtualPiano = pianoBuilder.getVirtualPiano();
         pressedKeys = new ArrayList<>();
     }
@@ -34,8 +41,14 @@ public class Piano {
 
     public void handleMouseRelease(long mouseClickDuration) {
         if (currentKey != null) {
-            currentKey.playNote(velocityCalculation(mouseClickDuration));
+            int velocity = velocityCalculation(mouseClickDuration);
+            currentKey.playNote(velocity);
             currentKey.resetColor();
+            if (recorder.doRecording()) {
+                GraphicsApp.println(currentKey + " | " + velocity + " | " + (System.currentTimeMillis() - timeStamp));
+                recorder.saveDataPoint(currentKey, velocity, System.currentTimeMillis() - timeStamp);
+            }
+            timeStamp = System.currentTimeMillis();
         }
     }
 
@@ -58,17 +71,22 @@ public class Piano {
                 decreaseOctave();
                 break;
             default:
-                Integer key = keyTranslator(event);
-                if (key != null && !keyInUse(key)) {
-                    virtualPiano.get(key).playNote(Configuration.VELOCITY_MAX);
-                    virtualPiano.get(key).setColor(Color.GREEN);
-                    pressedKeys.add(key);
+                Integer keyIndex = keyIndexTranslator(event);
+                if (keyIndex != null && !keyInUse(keyIndex)) {
+                    virtualPiano.get(keyIndex).playNote(Configuration.VELOCITY_MAX);
+                    virtualPiano.get(keyIndex).setColor(Color.GREEN);
+                    pressedKeys.add(keyIndex);
+                    if (recorder.doRecording()) {
+                        GraphicsApp.println(virtualPiano.get(keyIndex) + " | " + Configuration.VELOCITY_MAX + " | " + (System.currentTimeMillis() - timeStamp));
+                        recorder.saveDataPoint(virtualPiano.get(keyIndex), Configuration.VELOCITY_MAX, System.currentTimeMillis() - timeStamp);
+                    }
+                    timeStamp= System.currentTimeMillis();
                 }
         }
     }
 
     public void handleKeyRelease(KeyEvent event) {
-        Integer key = keyTranslator(event);
+        Integer key = keyIndexTranslator(event);
         if (key != null) {
             virtualPiano.get(key).resetColor();
             pressedKeys.remove(key);
@@ -102,7 +120,7 @@ public class Piano {
         return false;
     }
 
-    private Integer keyTranslator(KeyEvent event) {
+    private Integer keyIndexTranslator(KeyEvent event) {
         Note baseNote;
         switch (event.getExtendedKeyCode()) {
             case (KeyEvent.VK_S):

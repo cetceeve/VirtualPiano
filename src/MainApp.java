@@ -1,10 +1,10 @@
-import com.sun.istack.internal.NotNull;
-import de.mi.ur.midi.Note;
 import de.ur.mi.graphics.Color;
 import de.ur.mi.graphicsapp.GraphicsApp;
 import piano.Piano;
 import processing.event.MouseEvent;
+import recorder.PianoRecorder;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class MainApp extends GraphicsApp {
@@ -15,10 +15,12 @@ public class MainApp extends GraphicsApp {
     private static final int SMOOTH_LEVEL = 8;
     private static final Color BACKGROUND_COLOR = Color.DARK_GRAY;
     private Piano piano;
-    private long millisMouse;
+    private PianoRecorder pianoRecorder;
+    private long millis;
 
     public void setup() {
         initCanvas();
+        initRecorder();
         initPiano();
     }
 
@@ -29,7 +31,11 @@ public class MainApp extends GraphicsApp {
     }
 
     private void initPiano() {
-        piano = new Piano();
+        piano = new Piano(pianoRecorder);
+    }
+
+    private void initRecorder() {
+        pianoRecorder = new PianoRecorder();
     }
 
     public void draw() {
@@ -41,20 +47,36 @@ public class MainApp extends GraphicsApp {
     public void mousePressed(MouseEvent event) {
         int mouseX = event.getX();
         int mouseY = event.getY();
-        millisMouse = event.getMillis();
+        millis = event.getMillis();
         piano.handleMouseInput(mouseX, mouseY);
     }
 
     @Override
     public void mouseReleased(MouseEvent event) {
-        millisMouse -= event.getMillis();
-        println(-1 * millisMouse);
-        piano.handleMouseRelease(-1 * millisMouse);
+        millis -= event.getMillis();
+        piano.handleMouseRelease(-1 * millis);
     }
 
     @Override
     public void keyPressed(KeyEvent event) {
-        piano.handleKeyInput(event);
+        switch (event.getKeyCode()) {
+            case (KeyEvent.VK_1):
+                if (pianoRecorder.doRecording()) {
+                    pianoRecorder.stopRecording();
+                } else {
+                    pianoRecorder.startRecording();
+                }
+                break;
+            case (KeyEvent.VK_2):
+                pianoRecorder.playRecording();
+                break;
+            case (KeyEvent.VK_3):
+                pianoRecorder.deleteRecording();
+                break;
+            default:
+                piano.handleKeyInput(event);
+        }
+
     }
 
     @Override
