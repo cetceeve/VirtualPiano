@@ -13,6 +13,7 @@ public class MainApp extends GraphicsApp {
     private static final int SMOOTH_LEVEL = 8;
     private static final Color BACKGROUND_COLOR = Color.DARK_GRAY;
     private Piano piano;
+    private long millis;
 
     public void setup() {
         initCanvas();
@@ -38,12 +39,15 @@ public class MainApp extends GraphicsApp {
     public void mousePressed(MouseEvent event) {
         int mouseX = event.getX();
         int mouseY = event.getY();
+        millis = event.getMillis();
         piano.handleMouseInput(mouseX, mouseY);
     }
 
     @Override
     public void mouseReleased(MouseEvent event) {
-        piano.handleMouseRelease();
+        millis -= event.getMillis();
+        println(-1 * millis);
+        piano.handleMouseRelease(-1 * millis);
     }
 
 }
