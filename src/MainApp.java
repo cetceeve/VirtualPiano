@@ -1,9 +1,11 @@
+import com.sun.istack.internal.NotNull;
+import de.mi.ur.midi.Note;
 import de.ur.mi.graphics.Color;
-import de.ur.mi.graphics.Compound;
-import de.ur.mi.graphics.Rect;
 import de.ur.mi.graphicsapp.GraphicsApp;
 import piano.Piano;
 import processing.event.MouseEvent;
+
+import java.awt.event.KeyEvent;
 
 public class MainApp extends GraphicsApp {
 
@@ -13,7 +15,7 @@ public class MainApp extends GraphicsApp {
     private static final int SMOOTH_LEVEL = 8;
     private static final Color BACKGROUND_COLOR = Color.DARK_GRAY;
     private Piano piano;
-    private long millis;
+    private long millisMouse;
 
     public void setup() {
         initCanvas();
@@ -39,15 +41,24 @@ public class MainApp extends GraphicsApp {
     public void mousePressed(MouseEvent event) {
         int mouseX = event.getX();
         int mouseY = event.getY();
-        millis = event.getMillis();
+        millisMouse = event.getMillis();
         piano.handleMouseInput(mouseX, mouseY);
     }
 
     @Override
     public void mouseReleased(MouseEvent event) {
-        millis -= event.getMillis();
-        println(-1 * millis);
-        piano.handleMouseRelease(-1 * millis);
+        millisMouse -= event.getMillis();
+        println(-1 * millisMouse);
+        piano.handleMouseRelease(-1 * millisMouse);
     }
 
+    @Override
+    public void keyPressed(KeyEvent event) {
+        piano.handleKeyInput(event);
+    }
+
+    @Override
+    public void keyReleased(KeyEvent event) {
+        piano.handleKeyRelease(event);
+    }
 }

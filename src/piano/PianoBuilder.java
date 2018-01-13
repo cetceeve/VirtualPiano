@@ -8,17 +8,22 @@ import java.util.Collections;
 
 public class PianoBuilder {
     private Compound compound;
+    private ArrayList<PianoKey> virtualPiano;
 
     public PianoBuilder() {}
 
     public Compound newPiano() {
         compound = new Compound();
-        ArrayList<PianoKey> keys = new ArrayList<>();
+        virtualPiano = new ArrayList<>();
         for (int i = 0; i < Configuration.NUM_OF_OCTAVES; i++) {
-            Collections.addAll(keys, nextOctave(10 + i * Configuration.OCTAVE_LENGTH));
+            Collections.addAll(virtualPiano, nextOctave(10 + i * Configuration.OCTAVE_LENGTH));
         }
-        setNotes(keys);
+        setNotes(virtualPiano);
         return compound;
+    }
+
+    public ArrayList<PianoKey> getVirtualPiano() {
+        return virtualPiano;
     }
 
     private void setNotes(ArrayList<PianoKey> keys) {

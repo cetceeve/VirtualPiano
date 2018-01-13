@@ -14,6 +14,7 @@ public final class Configuration {
     public static final int BLACK_PIANO_KEY_SIZE_Y = 60;
     // octave
     public static final int OCTAVE_LENGTH = 7 * WHITE_PIANO_KEY_SIZE_X;
+    public static final int OCTAVE_NUM_OF_KEYS = 12;
     /////////////////////////////////////////
     // velocity calculation
     public static final int VELOCITY_MIN = 30;
