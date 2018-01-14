@@ -3,6 +3,7 @@ package piano;
 import de.mi.ur.midi.Note;
 import de.ur.mi.graphics.Color;
 import de.ur.mi.graphics.Compound;
+import de.ur.mi.graphicsapp.GraphicsApp;
 import recorder.Recorder;
 
 import java.awt.event.KeyEvent;
@@ -19,6 +20,7 @@ public class Piano{
     private long timeStamp = System.currentTimeMillis();
 
     public Piano(Recorder recorder) {
+        GraphicsApp.println("Init Piano");
         this.recorder = recorder;
         PianoBuilder pianoBuilder = new PianoBuilder();
         pianoBuilder.newPiano();
@@ -91,6 +93,7 @@ public class Piano{
     }
 
     private void increaseOctave() {
+        GraphicsApp.println("Octave Increased");
         if (currentOctave + 1 == Configuration.NUM_OF_OCTAVES) {
             currentOctave = 0;
         } else {
@@ -99,6 +102,7 @@ public class Piano{
     }
 
     private void decreaseOctave() {
+        GraphicsApp.println("Octave Decreased");
         if (currentOctave == 0) {
             currentOctave = Configuration.NUM_OF_OCTAVES - 1;
         } else {

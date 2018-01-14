@@ -4,7 +4,6 @@ import piano.Piano;
 import processing.event.MouseEvent;
 import recorder.PianoRecorder;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class MainApp extends GraphicsApp {
@@ -61,14 +60,10 @@ public class MainApp extends GraphicsApp {
     public void keyPressed(KeyEvent event) {
         switch (event.getKeyCode()) {
             case (KeyEvent.VK_1):
-                if (pianoRecorder.doRecording()) {
-                    pianoRecorder.stopRecording();
-                } else {
-                    pianoRecorder.startRecording();
-                }
+                pianoRecorder.toggleRecording();
                 break;
             case (KeyEvent.VK_2):
-                pianoRecorder.playRecording();
+                pianoRecorder.togglePlayback();
                 break;
             case (KeyEvent.VK_3):
                 pianoRecorder.deleteRecording();

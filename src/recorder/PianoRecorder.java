@@ -11,8 +11,9 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener {
     private boolean isRecording = false;
 
     public PianoRecorder() {
+        GraphicsApp.println("Init Recorder");
         recording = new ArrayList<>();
-        GraphicsApp.println("Init Background Thread");
+        GraphicsApp.println("Init Recorder Background Thread");
         recorderPlaybackThread = new RecorderPlaybackThread(this);
     }
 
@@ -24,12 +25,58 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener {
     }
 
     @Override
+    public ArrayList<RecorderDataPoint> getRecording() {
+        return recording;
+    }
+
+    @Override
     public boolean doRecording() {
         return isRecording;
     }
 
     @Override
-    public void playRecording() {
+    public void toggleRecording() {
+        if (isRecording) {
+            stopRecording();
+        } else {
+            startRecording();
+        }
+    }
+
+    private void startRecording() {
+        if (deleteRecording()) {
+            isRecording = true;
+            GraphicsApp.println("Start Recording");
+        }
+    }
+
+    private void stopRecording() {
+        if (!recording.isEmpty()) {
+            postprocessing();
+        }
+        isRecording = false;
+        GraphicsApp.println("Stop Recording");
+    }
+
+    public boolean deleteRecording() {
+        if (!isRecording && !recorderPlaybackThread.isAlive()) {
+            recording.clear();
+            GraphicsApp.println("Recording Deleted");
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void togglePlayback() {
+        if (recorderPlaybackThread.isAlive()) {
+            stopPlayback();
+        } else {
+            startPlayback();
+        }
+    }
+
+    private void startPlayback() {
         if (!recording.isEmpty() && !isRecording && !recorderPlaybackThread.isAlive()) {
             GraphicsApp.println("Start Playback");
             if (recorderPlaybackThread.getState() == Thread.State.TERMINATED) {
@@ -43,42 +90,19 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener {
             }
         }
     }
-    
-    @Override
-    public void startRecording() {
-        if (deleteRecording()) {
-            isRecording = true;
-            GraphicsApp.println("Start Recording");
-        }
-    }
 
-    @Override
-    public void stopRecording() {
-        if (!recording.isEmpty()) {
-            postprocessing();
+    private void stopPlayback() {
+        GraphicsApp.println("Stop Playback");
+        try {
+            recorderPlaybackThread.interrupt();
+        } catch (SecurityException event) {
+            event.printStackTrace();
         }
-        isRecording = false;
-        GraphicsApp.println("Stop Recording");
-    }
-
-    @Override
-    public boolean deleteRecording() {
-        if (!isRecording && !recorderPlaybackThread.isAlive()) {
-            recording.clear();
-            GraphicsApp.println("Recording Deleted");
-            return true;
-        } else {
-            return false;
-        }
+        GraphicsApp.println(recorderPlaybackThread.getState());
     }
 
     private void postprocessing() {
         recording.get(0).setWaitTime(0);
-    }
-
-    @Override
-    public ArrayList<RecorderDataPoint> getRecording() {
-        return recording;
     }
 
 
@@ -98,6 +122,7 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener {
                     Thread.sleep(dataPoint.getWaitTime());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                    return;
                 }
                 dataPoint.getKey().playNote(dataPoint.getVelocity());
             }

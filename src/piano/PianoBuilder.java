@@ -22,7 +22,7 @@ public class PianoBuilder {
             Collections.addAll(virtualPiano, nextOctave(10 + i * Configuration.OCTAVE_LENGTH));
         }
         setNotes(virtualPiano);
-        GraphicsApp.println("Piano Creation Complete in [millis]: " + (System.currentTimeMillis() - timeStamp));
+        GraphicsApp.println("Piano Creation Complete in [s]: " + ((System.currentTimeMillis() - timeStamp) / 1000));
     }
 
     public ArrayList<PianoKey> getVirtualPiano() {
