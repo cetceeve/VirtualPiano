@@ -3,7 +3,6 @@ package piano;
 import de.mi.ur.midi.Note;
 import de.ur.mi.graphics.Color;
 import de.ur.mi.graphics.Compound;
-import de.ur.mi.graphicsapp.GraphicsApp;
 import recorder.Recorder;
 
 import java.awt.event.KeyEvent;
@@ -45,7 +44,6 @@ public class Piano{
             currentKey.playNote(velocity);
             currentKey.resetColor();
             if (recorder.doRecording()) {
-                GraphicsApp.println(currentKey + " | " + velocity + " | " + (System.currentTimeMillis() - timeStamp));
                 recorder.saveDataPoint(currentKey, velocity, System.currentTimeMillis() - timeStamp);
             }
             timeStamp = System.currentTimeMillis();
@@ -77,7 +75,6 @@ public class Piano{
                     virtualPiano.get(keyIndex).setColor(Color.GREEN);
                     pressedKeys.add(keyIndex);
                     if (recorder.doRecording()) {
-                        GraphicsApp.println(virtualPiano.get(keyIndex) + " | " + Configuration.VELOCITY_MAX + " | " + (System.currentTimeMillis() - timeStamp));
                         recorder.saveDataPoint(virtualPiano.get(keyIndex), Configuration.VELOCITY_MAX, System.currentTimeMillis() - timeStamp);
                     }
                     timeStamp= System.currentTimeMillis();

@@ -5,6 +5,7 @@ import de.mi.ur.midi.Note;
 import de.mi.ur.midi.Synthesizer;
 import de.ur.mi.graphics.Color;
 import de.ur.mi.graphics.Rect;
+import de.ur.mi.graphicsapp.GraphicsApp;
 
 import javax.sound.midi.MidiUnavailableException;
 
@@ -31,6 +32,7 @@ public class PianoKey extends Rect {
         } catch (Synthesizer.NoteOutOfBoundsException e){
             e.printStackTrace();
         }
+        GraphicsApp.println("Playing: " + this.getNote() + " | " + velocity);
     }
 
     public void setNote(Note note) {

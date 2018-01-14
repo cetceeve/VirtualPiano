@@ -14,12 +14,12 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener {
         recording = new ArrayList<>();
         GraphicsApp.println("Init Background Thread");
         recorderPlaybackThread = new RecorderPlaybackThread(this);
-        GraphicsApp.println("Background Thread Ready");
     }
 
     @Override
     public void saveDataPoint(PianoKey key, int velocity, long waitTime) {
         RecorderDataPoint dataPoint = new RecorderDataPoint(key, velocity, waitTime);
+        GraphicsApp.println("New RecorderDataPoint: " + key + " | " + velocity + " | " + waitTime);
         recording.add(dataPoint);
     }
 
@@ -31,8 +31,16 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener {
     @Override
     public void playRecording() {
         if (!recording.isEmpty() && !isRecording && !recorderPlaybackThread.isAlive()) {
-            GraphicsApp.println("Opening Background Thread");
-            recorderPlaybackThread.start();
+            GraphicsApp.println("Start Playback");
+            if (recorderPlaybackThread.getState() == Thread.State.TERMINATED) {
+                GraphicsApp.println("Init Background Thread");
+                recorderPlaybackThread = new RecorderPlaybackThread(this);
+                GraphicsApp.println("Opening Background Thread");
+                recorderPlaybackThread.start();
+            } else {
+                GraphicsApp.println("Opening Background Thread");
+                recorderPlaybackThread.start();
+            }
         }
     }
     
@@ -40,6 +48,7 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener {
     public void startRecording() {
         if (deleteRecording()) {
             isRecording = true;
+            GraphicsApp.println("Start Recording");
         }
     }
 
@@ -49,12 +58,14 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener {
             postprocessing();
         }
         isRecording = false;
+        GraphicsApp.println("Stop Recording");
     }
 
     @Override
     public boolean deleteRecording() {
-        if (!isRecording) {
+        if (!isRecording && !recorderPlaybackThread.isAlive()) {
             recording.clear();
+            GraphicsApp.println("Recording Deleted");
             return true;
         } else {
             return false;

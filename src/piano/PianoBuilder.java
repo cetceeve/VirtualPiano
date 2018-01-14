@@ -2,6 +2,7 @@ package piano;
 
 import de.mi.ur.midi.Note;
 import de.ur.mi.graphics.Compound;
+import de.ur.mi.graphicsapp.GraphicsApp;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,12 +14,15 @@ public class PianoBuilder {
     public PianoBuilder() {}
 
     public void newPiano() {
+        GraphicsApp.println("Creating New Piano");
+        long timeStamp = System.currentTimeMillis();
         compound = new Compound();
         virtualPiano = new ArrayList<>();
         for (int i = 0; i < Configuration.NUM_OF_OCTAVES; i++) {
             Collections.addAll(virtualPiano, nextOctave(10 + i * Configuration.OCTAVE_LENGTH));
         }
         setNotes(virtualPiano);
+        GraphicsApp.println("Piano Creation Complete in [millis]: " + (System.currentTimeMillis() - timeStamp));
     }
 
     public ArrayList<PianoKey> getVirtualPiano() {
