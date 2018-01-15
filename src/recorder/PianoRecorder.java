@@ -92,7 +92,7 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener {
                 }
             } catch (IllegalThreadStateException e) {
                 try {
-                    Thread.sleep(10);
+                    Thread.sleep(20);
                 } catch (InterruptedException exception) {
                     exception.printStackTrace();
                 }
@@ -131,7 +131,7 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener {
                     Thread.sleep(dataPoint.getWaitTime());
                 } catch (InterruptedException e) {
                     GraphicsApp.println("Recorder Playback Thread Interrupted");
-                    return;
+                    break;
                 }
                 dataPoint.getKey().playNote(dataPoint.getVelocity());
             }

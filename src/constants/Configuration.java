@@ -1,5 +1,7 @@
 package constants;
 
+import de.ur.mi.graphics.Color;
+
 public final class Configuration {
 
     private Configuration() {}
@@ -34,11 +36,25 @@ public final class Configuration {
     public static final double VELOCITY_GRADIENT = -0.127;
 
     /////////////////////////////////////////
+    public static final int BUTTON_STANDARD_SIZE = 50;
     public static final String IMAGE_SOURCE_PLAY_BUTTON = "";
     public static final String IMAGE_SOURCE_PAUSE_BUTTON = "";
+    public static final int PLAY_BUTTON_POSITION_X = 0;
+    public static final int PLAY_BUTTON_POSITION_Y = 0;
 
     public static final String IMAGE_SOURCE_RECORDING_ON_BUTTON = "";
     public static final String IMAGE_SOURCE_RECORDING_OFF_BUTTON = "";
+    public static final int RECORDING_BUTTON_POSITION_X = 0;
+    public static final int RECORDING_BUTTON_POSITION_Y = 0;
 
     public static final String IMAGE_SOURCE_DELETE_BUTTON = "";
+    public static final int DELETE_BUTTON_POSITION_X = 0;
+    public static final int DELETE_BUTTON_POSITION_Y = 0;
+
+    public static final int SLIDER_START_POSITION = 1;
+    public static final int SLIDER_POSITION_Y = 60;
+    public static final int SLIDER_WIDTH = 120;
+    public static final int SLIDER_HEIGHT = 20;
+    public static final Color SLIDER_COLOR = Color.GREEN;
+    public static final int SLIDER_MOVEMENT_SPEED = 10;
 }
