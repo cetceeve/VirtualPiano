@@ -79,14 +79,24 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener {
     private void startPlayback() {
         if (!recording.isEmpty() && !isRecording && !recorderPlaybackThread.isAlive()) {
             GraphicsApp.println("Start Playback");
-            if (recorderPlaybackThread.getState() == Thread.State.TERMINATED) {
-                GraphicsApp.println("Init Background Thread");
-                recorderPlaybackThread = new RecorderPlaybackThread(this);
-                GraphicsApp.println("Opening Background Thread");
-                recorderPlaybackThread.start();
-            } else {
-                GraphicsApp.println("Opening Background Thread");
-                recorderPlaybackThread.start();
+            try {
+                GraphicsApp.println("Recorder Playback Thread State: " + recorderPlaybackThread.getState());
+                if (recorderPlaybackThread.getState() == Thread.State.TERMINATED) {
+                    GraphicsApp.println("Init Background Thread");
+                    recorderPlaybackThread = new RecorderPlaybackThread(this);
+                    GraphicsApp.println("Opening Background Thread");
+                    recorderPlaybackThread.start();
+                } else {
+                    GraphicsApp.println("Opening Background Thread");
+                    recorderPlaybackThread.start();
+                }
+            } catch (IllegalThreadStateException e) {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException exception) {
+                    exception.printStackTrace();
+                }
+                e.printStackTrace();
             }
         }
     }
@@ -95,10 +105,9 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener {
         GraphicsApp.println("Stop Playback");
         try {
             recorderPlaybackThread.interrupt();
-        } catch (SecurityException event) {
-            event.printStackTrace();
+        } catch (SecurityException e) {
+            e.printStackTrace();
         }
-        GraphicsApp.println(recorderPlaybackThread.getState());
     }
 
     private void postprocessing() {
@@ -121,7 +130,7 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener {
                 try {
                     Thread.sleep(dataPoint.getWaitTime());
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    GraphicsApp.println("Recorder Playback Thread Interrupted");
                     return;
                 }
                 dataPoint.getKey().playNote(dataPoint.getVelocity());
