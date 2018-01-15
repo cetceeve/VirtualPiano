@@ -4,9 +4,11 @@ import de.ur.mi.graphics.Image;
 
 public class Button implements Clickable, Drawable {
     private Image representation;
+    private String src;
 
     public Button(int posX, int posY, int size, String src) {
         representation = new Image(posX, posY, size, size, src);
+        this.src = src;
     }
 
     public void draw() {
@@ -15,11 +17,12 @@ public class Button implements Clickable, Drawable {
 
     public void changeRepresentation(String src) {
         representation = new Image(representation.getX(), representation.getY(), (int) representation.getWidth(), (int) representation.getHeight(), src);
+        this.src = src;
     }
 
     //TODO: this might not work!
     public String getRepresentation() {
-        return representation.toString();
+        return src;
     }
 
     @Override

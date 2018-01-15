@@ -20,9 +20,9 @@ public class MainApp extends GraphicsApp {
 
     public void setup() {
         initCanvas();
+        initUi();
         initRecorder();
         initPiano();
-        initUi();
     }
 
     private void initCanvas() {
@@ -32,7 +32,8 @@ public class MainApp extends GraphicsApp {
     }
 
     private void initRecorder() {
-        pianoRecorder = new PianoRecorder();
+        pianoRecorder = new PianoRecorder(ui);
+        ui.setRecorderInterfaceListener(pianoRecorder);
     }
 
     private void initPiano() {
@@ -40,7 +41,7 @@ public class MainApp extends GraphicsApp {
     }
 
     private void initUi() {
-        ui = new UserInterface(pianoRecorder);
+        ui = new UserInterface();
     }
 
     public void draw() {
@@ -69,11 +70,9 @@ public class MainApp extends GraphicsApp {
         switch (event.getKeyCode()) {
             case (KeyEvent.VK_1):
                 pianoRecorder.toggleRecording();
-                ui.toggleRecordingButton();
                 break;
             case (KeyEvent.VK_2):
                 pianoRecorder.togglePlayback();
-                ui.togglePlaybackButton();
                 break;
             case (KeyEvent.VK_3):
                 pianoRecorder.deleteRecording();

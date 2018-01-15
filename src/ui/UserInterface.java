@@ -6,17 +6,20 @@ import recorder.RecorderInterfaceListener;
 
 import java.util.ArrayList;
 
-public class UserInterface implements Drawable {
+public class UserInterface implements Drawable, RecorderEventListener {
     private RecorderInterfaceListener recorderInterfaceListener;
     private ArrayList<RecorderButton> recorderButtons;
     private RecordingButton recordingButton;
     private PlayButton playButton;
     private DeleteButton deleteButton;
 
-    public UserInterface(RecorderInterfaceListener recorderInterfaceListener) {
-        this.recorderInterfaceListener = recorderInterfaceListener;
+    public UserInterface() {
         createButtons();
         createRecorderButtonArrayList();
+    }
+
+    public void setRecorderInterfaceListener(RecorderInterfaceListener recorderInterfaceListener) {
+        this.recorderInterfaceListener = recorderInterfaceListener;
     }
 
     @Override
@@ -35,10 +38,12 @@ public class UserInterface implements Drawable {
         }
     }
 
+    @Override
     public void toggleRecordingButton() {
         recordingButton.switchRepresentation();
     }
 
+    @Override
     public void togglePlaybackButton() {
         playButton.switchRepresentation();
     }

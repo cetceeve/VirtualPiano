@@ -2,15 +2,18 @@ package recorder;
 
 import de.ur.mi.graphicsapp.GraphicsApp;
 import piano.PianoKey;
+import ui.RecorderEventListener;
 
 import java.util.ArrayList;
 
 public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener, RecorderInterfaceListener {
     private RecorderPlaybackThread recorderPlaybackThread;
     private ArrayList<RecorderDataPoint> recording;
+    private RecorderEventListener userInterface;
     private boolean isRecording = false;
 
-    public PianoRecorder() {
+    public PianoRecorder(RecorderEventListener userInterface) {
+        this.userInterface = userInterface;
         GraphicsApp.println("Init Recorder");
         recording = new ArrayList<>();
         GraphicsApp.println("Init Recorder Background Thread");
@@ -27,6 +30,11 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener, 
     @Override
     public ArrayList<RecorderDataPoint> getRecording() {
         return recording;
+    }
+
+    @Override
+    public void playbackStopped() {
+        userInterface.togglePlaybackButton();
     }
 
     @Override
@@ -47,6 +55,7 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener, 
         if (deleteRecording()) {
             isRecording = true;
             GraphicsApp.println("Start Recording");
+            userInterface.toggleRecordingButton();
         }
     }
 
@@ -55,6 +64,7 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener, 
             postprocessing();
         }
         isRecording = false;
+        userInterface.toggleRecordingButton();
         GraphicsApp.println("Stop Recording");
     }
 
@@ -81,6 +91,7 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener, 
     private void startPlayback() {
         if (!recording.isEmpty() && !isRecording && !recorderPlaybackThread.isAlive()) {
             GraphicsApp.println("Start Playback");
+            userInterface.togglePlaybackButton();
             try {
                 GraphicsApp.println("Recorder Playback Thread State: " + recorderPlaybackThread.getState());
                 if (recorderPlaybackThread.getState() == Thread.State.TERMINATED) {
@@ -137,6 +148,7 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener, 
                 }
                 dataPoint.getKey().playNote(dataPoint.getVelocity());
             }
+            threadListener.playbackStopped();
             GraphicsApp.println("Closing Background Thread");
         }
     }

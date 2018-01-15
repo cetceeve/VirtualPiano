@@ -40,17 +40,18 @@ public final class Configuration {
     /////////////////////////////////////////
     public static final int BUTTON_STANDARD_SIZE = 50;
 
-    public static final String IMAGE_SOURCE_RECORDING_ON_BUTTON = "data/assets/play-button-png-image-99171.png";
-    public static final String IMAGE_SOURCE_RECORDING_OFF_BUTTON = "data/assets/play-button-png-image-99171.png";
+    public static final String IMAGE_SOURCE_RECORDING_ON_BUTTON = "data/assets/recording_button.png";
+    public static final String IMAGE_SOURCE_RECORDING_OFF_BUTTON = "data/assets/stop_recording_button.png";
     public static final int RECORDING_BUTTON_POSITION_X = OCTAVE_LENGTH * 3 - 3 * BUTTON_STANDARD_SIZE - 10;
     public static final int RECORDING_BUTTON_POSITION_Y = 10;
 
-    public static final String IMAGE_SOURCE_PLAY_BUTTON = "data/assets/play-button-png-image-99171.png";
-    public static final String IMAGE_SOURCE_PAUSE_BUTTON = "data/assets/play-button-png-image-99171.png";
+    public static final String IMAGE_SOURCE_PLAY_BUTTON = "data/assets/playback_button_2.png";
+    //http://pngimages.net/sites/default/files/stop-png-image-99225.png
+    public static final String IMAGE_SOURCE_STOP_BUTTON = "data/assets/stop_playback_button.png";
     public static final int PLAY_BUTTON_POSITION_X = OCTAVE_LENGTH * 3 - 2 * BUTTON_STANDARD_SIZE;
     public static final int PLAY_BUTTON_POSITION_Y = 10;
 
-    public static final String IMAGE_SOURCE_DELETE_BUTTON = "data/assets/play-button-png-image-99171.png";
+    public static final String IMAGE_SOURCE_DELETE_BUTTON = "data/assets/trash_can.png";
     public static final int DELETE_BUTTON_POSITION_X = 10 + OCTAVE_LENGTH * 3 - BUTTON_STANDARD_SIZE;
     public static final int DELETE_BUTTON_POSITION_Y = 10;
 

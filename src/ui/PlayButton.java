@@ -12,7 +12,7 @@ public class PlayButton extends Button implements ToggleButton, RecorderButton {
     @Override
     public void switchRepresentation() {
         if (this.getRepresentation().equals(Configuration.IMAGE_SOURCE_PLAY_BUTTON)) {
-            this.changeRepresentation(Configuration.IMAGE_SOURCE_PAUSE_BUTTON);
+            this.changeRepresentation(Configuration.IMAGE_SOURCE_STOP_BUTTON);
         } else {
             this.changeRepresentation(Configuration.IMAGE_SOURCE_PLAY_BUTTON);
         }
