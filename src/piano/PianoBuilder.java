@@ -1,5 +1,6 @@
 package piano;
 
+import constants.Configuration;
 import de.mi.ur.midi.Note;
 import de.ur.mi.graphics.Compound;
 import de.ur.mi.graphicsapp.GraphicsApp;
