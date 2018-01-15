@@ -1,8 +1,9 @@
 package ui;
 
 import constants.Configuration;
+import recorder.RecorderInterfaceListener;
 
-public class PlayButton extends Button implements ToggleButton{
+public class PlayButton extends Button implements ToggleButton, RecorderButton {
 
     public PlayButton(int posX, int posY, int size) {
         super(posX, posY, size, Configuration.IMAGE_SOURCE_PLAY_BUTTON);
@@ -15,5 +16,10 @@ public class PlayButton extends Button implements ToggleButton{
         } else {
             this.changeRepresentation(Configuration.IMAGE_SOURCE_PLAY_BUTTON);
         }
+    }
+
+    @Override
+    public void executeRecorderFunction(RecorderInterfaceListener recorderInterfaceListener) {
+        recorderInterfaceListener.togglePlayback();
     }
 }

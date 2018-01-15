@@ -56,7 +56,7 @@ public class PianoBuilder {
     private WhitePianoKey[] createWhiteKeys(int startPosition) {
         WhitePianoKey whitePianoKeys[] = new WhitePianoKey[7];
         for (int i = 0; i < whitePianoKeys.length; i++) {
-            whitePianoKeys[i] = new WhitePianoKey(Note.C_CONTRA, startPosition + i * Configuration.WHITE_PIANO_KEY_SIZE_X, 10);
+            whitePianoKeys[i] = new WhitePianoKey(Note.C_CONTRA, startPosition + i * Configuration.WHITE_PIANO_KEY_SIZE_X, Configuration.PIANO_POS_Y);
             compound.add(whitePianoKeys[i]);
         }
         return whitePianoKeys;
@@ -64,7 +64,7 @@ public class PianoBuilder {
 
     private BlackPianoKey createBlackKey(PianoKey whiteParentKey) {
         int posX = (int)whiteParentKey.getRightBorder() - Configuration.BLACK_PIANO_KEY_SIZE_X / 2;
-        BlackPianoKey blackPianoKey = new BlackPianoKey(Note.C_SHARP_CONTRA, posX, 10);
+        BlackPianoKey blackPianoKey = new BlackPianoKey(Note.C_SHARP_CONTRA, posX, Configuration.PIANO_POS_Y);
         compound.add(blackPianoKey);
         return blackPianoKey;
     }

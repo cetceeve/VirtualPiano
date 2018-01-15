@@ -9,21 +9,21 @@ public class Button implements Clickable, Drawable {
         representation = new Image(posX, posY, size, size, src);
     }
 
-    @Override
-    public boolean hitTest(double x, double y) {
-        return representation.hitTest(x, y);
-    }
-
     public void draw() {
         representation.draw();
     }
 
     public void changeRepresentation(String src) {
-        representation = new Image(representation.getX(), representation.getY(), (int)representation.getWidth(), (int)representation.getHeight(), src);
+        representation = new Image(representation.getX(), representation.getY(), (int) representation.getWidth(), (int) representation.getHeight(), src);
     }
 
     //TODO: this might not work!
     public String getRepresentation() {
         return representation.toString();
+    }
+
+    @Override
+    public boolean hitTest(double x, double y) {
+        return representation.hitTest(x, y);
     }
 }

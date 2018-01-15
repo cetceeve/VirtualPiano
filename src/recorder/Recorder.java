@@ -6,5 +6,4 @@ public interface Recorder {
 
     public void saveDataPoint(PianoKey key, int velocity, long waitTime);
     public boolean doRecording();
-    public void toggleRecording();
 }

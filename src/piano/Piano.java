@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public class Piano{
     private Compound pianoRepresentation;
+    private Slider slider;
     private ArrayList<PianoKey> virtualPiano;
     private ArrayList<Integer> pressedKeys;
     private int currentOctave = Configuration.STARTING_OCTAVE;
@@ -27,17 +28,20 @@ public class Piano{
         pianoBuilder.newPiano();
         pianoRepresentation = pianoBuilder.getPianoRepresentation();
         virtualPiano = pianoBuilder.getVirtualPiano();
+        slider = new Slider();
         pressedKeys = new ArrayList<>();
     }
 
     public void draw() {
         pianoRepresentation.draw();
+        slider.update();
+        slider.draw();
     }
 
     public void handleMouseInput(int mouseX, int mouseY) {
         currentKey = (PianoKey) pianoRepresentation.getObjectAt(mouseX, mouseY);
         if (currentKey != null) {
-            currentKey.setColor(Color.GREEN);
+            currentKey.setColor(Configuration.HIGHLIGHT_COLOR);
         }
     }
 
@@ -75,7 +79,7 @@ public class Piano{
                 Integer keyIndex = keyIndexTranslator(event);
                 if (keyIndex != null && !keyInUse(keyIndex)) {
                     virtualPiano.get(keyIndex).playNote(Configuration.VELOCITY_MAX);
-                    virtualPiano.get(keyIndex).setColor(Color.GREEN);
+                    virtualPiano.get(keyIndex).setColor(Configuration.HIGHLIGHT_COLOR);
                     pressedKeys.add(keyIndex);
                     if (recorder.doRecording()) {
                         recorder.saveDataPoint(virtualPiano.get(keyIndex), Configuration.VELOCITY_MAX, System.currentTimeMillis() - timeStamp);
@@ -94,20 +98,26 @@ public class Piano{
     }
 
     private void increaseOctave() {
-        GraphicsApp.println("Octave Increased");
         if (currentOctave + 1 == Configuration.NUM_OF_OCTAVES) {
+            GraphicsApp.println("Octave Decreased");
             currentOctave = 0;
+            slider.moveLeft(Slider.SliderPositions.CONTRA);
         } else {
+            GraphicsApp.println("Octave Increased");
             currentOctave++;
+            slider.moveRight();
         }
     }
 
     private void decreaseOctave() {
-        GraphicsApp.println("Octave Decreased");
         if (currentOctave == 0) {
+            GraphicsApp.println("Octave Increased");
             currentOctave = Configuration.NUM_OF_OCTAVES - 1;
+            slider.moveRight(Slider.SliderPositions.SMALL);
         } else {
+            GraphicsApp.println("Octave Decreased");
             currentOctave--;
+            slider.moveLeft();
         }
     }
 

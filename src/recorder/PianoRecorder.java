@@ -5,7 +5,7 @@ import piano.PianoKey;
 
 import java.util.ArrayList;
 
-public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener {
+public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener, RecorderInterfaceListener {
     private RecorderPlaybackThread recorderPlaybackThread;
     private ArrayList<RecorderDataPoint> recording;
     private boolean isRecording = false;
@@ -58,6 +58,7 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener {
         GraphicsApp.println("Stop Recording");
     }
 
+    @Override
     public boolean deleteRecording() {
         if (!isRecording && !recorderPlaybackThread.isAlive()) {
             recording.clear();
@@ -68,6 +69,7 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener {
         }
     }
 
+    @Override
     public void togglePlayback() {
         if (recorderPlaybackThread.isAlive()) {
             stopPlayback();
