@@ -101,7 +101,7 @@ public class Piano{
         if (currentOctave + 1 == Configuration.NUM_OF_OCTAVES) {
             GraphicsApp.println("Octave Decreased");
             currentOctave = 0;
-            slider.moveLeft(Slider.SliderPositions.CONTRA);
+            slider.moveLeft(0);
         } else {
             GraphicsApp.println("Octave Increased");
             currentOctave++;
@@ -113,7 +113,7 @@ public class Piano{
         if (currentOctave == 0) {
             GraphicsApp.println("Octave Increased");
             currentOctave = Configuration.NUM_OF_OCTAVES - 1;
-            slider.moveRight(Slider.SliderPositions.SMALL);
+            slider.moveRight(Configuration.NUM_OF_OCTAVES - 1);
         } else {
             GraphicsApp.println("Octave Decreased");
             currentOctave--;

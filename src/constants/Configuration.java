@@ -11,6 +11,8 @@ public final class Configuration {
     public static final int STARTING_OCTAVE = 1;
     public static final Color HIGHLIGHT_COLOR = Color.BLUE;
     public static final int PIANO_POS_Y = 70;
+    public static final int KEY_COLOR_FADE_SPEED = 7;
+    public static final Color KEY_PLAYBACK_COLOR = Color.RED;
     // white key
     public static final int WHITE_PIANO_KEY_SIZE_X = 40;
     public static final int WHITE_PIANO_KEY_SIZE_Y = 110;

@@ -1,5 +1,6 @@
 package recorder;
 
+import constants.Configuration;
 import de.ur.mi.graphicsapp.GraphicsApp;
 import piano.PianoKey;
 import ui.RecorderEventListener;
@@ -147,6 +148,11 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener, 
                     break;
                 }
                 dataPoint.getKey().playNote(dataPoint.getVelocity());
+                dataPoint.getKey().setColor(Configuration.KEY_PLAYBACK_COLOR);
+                dataPoint.getKey().activateColorFadeOut();
+                if (Thread.currentThread().isInterrupted()) {
+                    break;
+                }
             }
             threadListener.playbackStopped();
             GraphicsApp.println("Closing Background Thread");

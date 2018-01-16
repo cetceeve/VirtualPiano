@@ -6,11 +6,6 @@ import de.ur.mi.graphics.Rect;
 import ui.Drawable;
 
 public class Slider extends Rect implements Drawable {
-    public enum SliderPositions {
-        CONTRA,
-        GREAT,
-        SMALL
-    }
 
     private int endPosition;
     private int sliderPosition = Configuration.SLIDER_START_POSITION;
@@ -36,8 +31,8 @@ public class Slider extends Rect implements Drawable {
         movementDirection = 1;
     }
 
-    public void moveRight(SliderPositions sP) {
-        sliderPosition = sP.ordinal();
+    public void moveRight(int targetPosition) {
+        sliderPosition = targetPosition;
         endPosition = 10 + sliderPosition * Configuration.SLIDER_WIDTH;
         movementDirection = 1;
     }
@@ -48,8 +43,8 @@ public class Slider extends Rect implements Drawable {
         movementDirection = -1;
     }
 
-    public void moveLeft(SliderPositions sP) {
-        sliderPosition = sP.ordinal();
+    public void moveLeft(int targetPosition) {
+        sliderPosition = targetPosition;
         endPosition = 10 + sliderPosition * Configuration.SLIDER_WIDTH;
         movementDirection = -1;
     }
