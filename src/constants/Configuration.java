@@ -57,6 +57,11 @@ public final class Configuration {
     public static final int DELETE_BUTTON_POSITION_X = 10 + OCTAVE_LENGTH * 3 - BUTTON_STANDARD_SIZE;
     public static final int DELETE_BUTTON_POSITION_Y = 10;
 
+    public static final String IMAGE_SOURCE_CONTROLS_BUTTON = "data/assets/controls_button.png";
+    public static final String IMAGE_SOURCE_CONTROLS_OVERLAY = "data/assets/controls_overlay.png";
+    public static final int CONTROLS_OVERLAY_POSITION_X = 10;
+    public static final int CONTROLS_OVERLAY_POSITION_Y = 15;
+
     public static final int SLIDER_START_POSITION = 1;
     public static final int SLIDER_POSITION_Y = PIANO_POS_Y + WHITE_PIANO_KEY_SIZE_Y + 5;
     public static final int SLIDER_WIDTH = OCTAVE_LENGTH;

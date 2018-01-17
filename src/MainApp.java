@@ -17,6 +17,7 @@ public class MainApp extends GraphicsApp {
     private PianoRecorder pianoRecorder;
     private UserInterface ui;
     private long millis;
+    private boolean uiHandledMouseClick;
 
     public void setup() {
         initCanvas();
@@ -55,14 +56,18 @@ public class MainApp extends GraphicsApp {
         int mouseX = event.getX();
         int mouseY = event.getY();
         millis = event.getMillis();
-        piano.handleMouseInput(mouseX, mouseY);
-        ui.handleMouseClick(mouseX, mouseY);
+        uiHandledMouseClick = ui.handleMouseClick(mouseX, mouseY);
+        if (!uiHandledMouseClick) {
+            piano.handleMouseInput(mouseX, mouseY);
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent event) {
         millis -= event.getMillis();
-        piano.handleMouseRelease(-1 * millis);
+        if (!uiHandledMouseClick) {
+            piano.handleMouseRelease(-1 * millis);
+        }
     }
 
     @Override
@@ -76,6 +81,9 @@ public class MainApp extends GraphicsApp {
                 break;
             case (KeyEvent.VK_3):
                 pianoRecorder.deleteRecording();
+                break;
+            case (KeyEvent.VK_ESCAPE):
+                ui.toggleControlsOverlay();
                 break;
             default:
                 piano.handleKeyInput(event);

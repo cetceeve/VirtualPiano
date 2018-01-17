@@ -1,7 +1,6 @@
 package ui;
 
 import constants.Configuration;
-import piano.Slider;
 import recorder.RecorderInterfaceListener;
 
 import java.util.ArrayList;
@@ -12,10 +11,12 @@ public class UserInterface implements Drawable, RecorderEventListener {
     private RecordingButton recordingButton;
     private PlayButton playButton;
     private DeleteButton deleteButton;
+    private ControlsOverlay controlsOverlay;
 
     public UserInterface() {
         createButtons();
         createRecorderButtonArrayList();
+        controlsOverlay = new ControlsOverlay(Configuration.CONTROLS_OVERLAY_POSITION_X, Configuration.CONTROLS_OVERLAY_POSITION_Y);
     }
 
     public void setRecorderInterfaceListener(RecorderInterfaceListener recorderInterfaceListener) {
@@ -27,15 +28,21 @@ public class UserInterface implements Drawable, RecorderEventListener {
         recordingButton.draw();
         playButton.draw();
         deleteButton.draw();
+        controlsOverlay.draw();
     }
 
-    public void handleMouseClick(double x, double y) {
+    public boolean handleMouseClick(double x, double y) {
         for (RecorderButton c : recorderButtons) {
             if (c.hitTest(x, y)) {
                 c.executeRecorderFunction(recorderInterfaceListener);
-                break;
+                return true;
             }
         }
+        if (controlsOverlay.hitTest(x, y)) {
+            controlsOverlay.toggleOverlay();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -46,6 +53,10 @@ public class UserInterface implements Drawable, RecorderEventListener {
     @Override
     public void togglePlaybackButton() {
         playButton.switchRepresentation();
+    }
+
+    public void toggleControlsOverlay() {
+        controlsOverlay.toggleOverlay();
     }
 
     private void createButtons() {
