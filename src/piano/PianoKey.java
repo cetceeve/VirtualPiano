@@ -16,16 +16,19 @@ public class PianoKey extends Rect {
     private Color keyColor;
     private boolean useColorFadeOut = false;
 
-    public PianoKey(Note note, int x, int y, int width, int height, Color color) {
+    public PianoKey(Note note, int x, int y, int width, int height, Color color, Synthesizer synthesizer) {
         super(x, y, width, height, color);
         this.note = note;
         this.keyColor = color;
+        this.synthesizer = synthesizer;
+        /*
         try {
             synthesizer = new Synthesizer();
+            synthesizer.setInstrument(Instrument.PIANO);
         } catch (MidiUnavailableException e) {
             e.printStackTrace();
         }
-        synthesizer.setInstrument(Instrument.PIANO);
+        */
     }
 
     @Override

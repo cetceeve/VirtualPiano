@@ -1,12 +1,15 @@
 package piano;
 
 import constants.Configuration;
+import de.mi.ur.midi.Instrument;
 import de.mi.ur.midi.Note;
+import de.mi.ur.midi.Synthesizer;
 import de.ur.mi.graphics.Color;
 import de.ur.mi.graphics.Compound;
 import de.ur.mi.graphicsapp.GraphicsApp;
 import recorder.Recorder;
 
+import javax.sound.midi.MidiUnavailableException;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
@@ -17,6 +20,7 @@ public class Piano{
     private ArrayList<Integer> pressedKeys;
     private int currentOctave = Configuration.STARTING_OCTAVE;
     private PianoKey currentKey;
+    private Synthesizer synthesizer;
 
     private Recorder recorder;
     private long timeStamp = System.currentTimeMillis();
@@ -24,7 +28,13 @@ public class Piano{
     public Piano(Recorder recorder) {
         GraphicsApp.println("Init Piano");
         this.recorder = recorder;
-        PianoBuilder pianoBuilder = new PianoBuilder();
+        try {
+            synthesizer = new Synthesizer();
+            synthesizer.setInstrument(Instrument.PIANO);
+        } catch (MidiUnavailableException e) {
+            e.printStackTrace();
+        }
+        PianoBuilder pianoBuilder = new PianoBuilder(synthesizer);
         pianoBuilder.newPiano();
         pianoRepresentation = pianoBuilder.getPianoRepresentation();
         virtualPiano = pianoBuilder.getVirtualPiano();
