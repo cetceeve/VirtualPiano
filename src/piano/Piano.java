@@ -4,16 +4,21 @@ import constants.Configuration;
 import de.mi.ur.midi.Instrument;
 import de.mi.ur.midi.Note;
 import de.mi.ur.midi.Synthesizer;
-import de.ur.mi.graphics.Color;
 import de.ur.mi.graphics.Compound;
 import de.ur.mi.graphicsapp.GraphicsApp;
 import recorder.Recorder;
+import ui.Drawable;
 
 import javax.sound.midi.MidiUnavailableException;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-public class Piano{
+/*
+This class holds all piano Systems and the synthesizer.
+It also oversees all inputs for the Piano.
+The velocity calculation is also done here.
+ */
+public class Piano implements Drawable{
     private Compound pianoRepresentation;
     private Slider slider;
     private ArrayList<PianoKey> virtualPiano;
@@ -26,28 +31,22 @@ public class Piano{
     private long timeStamp = System.currentTimeMillis();
 
     public Piano(Recorder recorder) {
-        GraphicsApp.println("Init Piano");
-        this.recorder = recorder;
-        try {
-            synthesizer = new Synthesizer();
-            synthesizer.setInstrument(Instrument.PIANO);
-        } catch (MidiUnavailableException e) {
-            e.printStackTrace();
-        }
-        PianoBuilder pianoBuilder = new PianoBuilder(synthesizer);
-        pianoBuilder.newPiano();
-        pianoRepresentation = pianoBuilder.getPianoRepresentation();
-        virtualPiano = pianoBuilder.getVirtualPiano();
         slider = new Slider();
         pressedKeys = new ArrayList<>();
+        GraphicsApp.println("Init Piano");
+        this.recorder = recorder;
+        initSynthesizer();
+        initPianoSystems();
     }
 
+    @Override
     public void draw() {
         pianoRepresentation.draw();
         slider.update();
         slider.draw();
     }
 
+    /////////////////////////////////////////////////
     public void handleMouseInput(int mouseX, int mouseY) {
         currentKey = (PianoKey) pianoRepresentation.getObjectAt(mouseX, mouseY);
         if (currentKey != null) {
@@ -55,6 +54,10 @@ public class Piano{
         }
     }
 
+    /*
+    play note and save it if recording is on
+    timeStamp holds the time since the last note was played
+     */
     public void handleMouseRelease(long mouseClickDuration) {
         if (currentKey != null) {
             int velocity = velocityCalculation(mouseClickDuration);
@@ -67,16 +70,27 @@ public class Piano{
         }
     }
 
+    /*
+    simple linear sloping strait with top and bottom limits
+     */
     private int velocityCalculation(long clickDuration) {
-        if (clickDuration < Configuration.VELOCITY_MOUSECLICKDURATION_THRESHOLD_LOW) {
+        if (clickDuration < Configuration.VELOCITY_MOUSECLICKDURATION_THRESHOLD) {
             return Configuration.VELOCITY_MAX;
-        } else if (clickDuration > Configuration.VELOCITY_MOUSECLICKDURATION_THRESHOLD_HIGH) {
+        } else if (clickDuration > Configuration.VELOCITY_MOUSECLICKDURATION_LIMIT) {
             return Configuration.VELOCITY_MIN;
         } else {
             return (int) (Configuration.VELOCITY_GRADIENT * clickDuration + Configuration.VELOCITY_OFFSET);
         }
     }
 
+    /////////////////////////////////////////////////
+    /*
+    note is played on input not on release, therefore no velocity calculations
+    {This seemed more natural to me]
+
+    play note and save it if recording is on
+    to avoid playing the notes continually when user holds keys (sounds horrific) the pressed Keys are tracked
+     */
     public void handleKeyInput(KeyEvent event) {
         switch (event.getKeyCode()) {
             case (KeyEvent.VK_SHIFT):
@@ -107,6 +121,24 @@ public class Piano{
         }
     }
 
+    /*
+    checks if a key is currently pressed
+     */
+    private boolean keyInUse(int keyIndex) {
+        if (!pressedKeys.isEmpty()) {
+            for (Integer i : pressedKeys) {
+                if (i == keyIndex) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /*
+    circle threw all octaves upwards
+    (currentOctave value is used in keyIndexTranslator)
+     */
     private void increaseOctave() {
         if (currentOctave + 1 == Configuration.NUM_OF_OCTAVES) {
             GraphicsApp.println("Octave Decreased");
@@ -119,6 +151,10 @@ public class Piano{
         }
     }
 
+    /*
+    circle threw all octaves downwards
+    (currentOctave value is used in keyIndexTranslator)
+     */
     private void decreaseOctave() {
         if (currentOctave == 0) {
             GraphicsApp.println("Octave Increased");
@@ -131,17 +167,9 @@ public class Piano{
         }
     }
 
-    private boolean keyInUse(int note) {
-        if (!pressedKeys.isEmpty()) {
-            for (Integer i : pressedKeys) {
-                if (i == note) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
+    /*
+    translates the key input into the correct index value for the virtualPiano ArrayList
+     */
     private Integer keyIndexTranslator(KeyEvent event) {
         Note baseNote;
         switch (event.getExtendedKeyCode()) {
@@ -178,12 +206,29 @@ public class Piano{
             case (KeyEvent.VK_P):
                 baseNote = Note.A_SHARP_CONTRA;
                 break;
-            case (0x010000D6):
+            case (0x010000D6): // 'Ö'
                 baseNote = Note.H_CONTRA;
                 break;
             default:
                 return null;
         }
         return baseNote.ordinal() + currentOctave * Configuration.OCTAVE_NUM_OF_KEYS;
+    }
+
+    /////////////////////////////////////////////////
+    private void initSynthesizer() {
+        try {
+            synthesizer = new Synthesizer();
+            synthesizer.setInstrument(Instrument.PIANO);
+        } catch (MidiUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initPianoSystems() {
+        PianoBuilder pianoBuilder = new PianoBuilder(synthesizer);
+        pianoBuilder.newPiano(Configuration.NUM_OF_OCTAVES);
+        pianoRepresentation = pianoBuilder.getPianoRepresentation();
+        virtualPiano = pianoBuilder.getVirtualPiano();
     }
 }

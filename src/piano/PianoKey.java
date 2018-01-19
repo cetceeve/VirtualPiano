@@ -1,36 +1,31 @@
 package piano;
 
 import constants.Configuration;
-import de.mi.ur.midi.Instrument;
 import de.mi.ur.midi.Note;
 import de.mi.ur.midi.Synthesizer;
 import de.ur.mi.graphics.Color;
 import de.ur.mi.graphics.Rect;
 import de.ur.mi.graphicsapp.GraphicsApp;
 
-import javax.sound.midi.MidiUnavailableException;
-
+/*
+This class represents one Piano Key. Its basically a very powerful Rectangular.
+A Piano Key knows its note and can play it, it also does a bunch of stuff with color.
+ */
 public class PianoKey extends Rect {
     private Synthesizer synthesizer;
     private Note note;
     private Color keyColor;
     private boolean useColorFadeOut = false;
 
-    public PianoKey(Note note, int x, int y, int width, int height, Color color, Synthesizer synthesizer) {
+    public PianoKey(int x, int y, int width, int height, Color color, Synthesizer synthesizer) {
         super(x, y, width, height, color);
-        this.note = note;
         this.keyColor = color;
         this.synthesizer = synthesizer;
-        /*
-        try {
-            synthesizer = new Synthesizer();
-            synthesizer.setInstrument(Instrument.PIANO);
-        } catch (MidiUnavailableException e) {
-            e.printStackTrace();
-        }
-        */
     }
 
+    /*
+    if necessary a highlight color is faded out
+     */
     @Override
     public void draw() {
         if (useColorFadeOut) {
@@ -39,23 +34,21 @@ public class PianoKey extends Rect {
         super.draw();
     }
 
+    /////////////////////////////////////////////////
     public void playNote(int velocity) {
         try {
             synthesizer.playNote(note, velocity);
         } catch (Synthesizer.NoteOutOfBoundsException e) {
             e.printStackTrace();
         }
-        GraphicsApp.println("Playing: " + this.getNote() + " | " + velocity);
+        GraphicsApp.println("Playing: " + note + " | " + velocity);
     }
 
     public void setNote(Note note) {
         this.note = note;
     }
 
-    public Note getNote() {
-        return note;
-    }
-
+    /////////////////////////////////////////////////
     public void resetColor() {
         this.setColor(keyColor);
     }
@@ -64,6 +57,9 @@ public class PianoKey extends Rect {
         useColorFadeOut = true;
     }
 
+    /*
+    fade from any highlight color back to the setup color
+     */
     private void colorFadeOut() {
         int colorValueRed = this.getColor().getRed();
         int colorValueGreen = this.getColor().getGreen();
@@ -77,7 +73,9 @@ public class PianoKey extends Rect {
         if (colorValueBlue != keyColor.getBlue()) {
             colorValueBlue = colorValueUpdater(colorValueBlue, keyColor.getBlue());
         }
+
         this.setColor(colorValueRed, colorValueGreen, colorValueBlue);
+
         if (colorValueRed == keyColor.getRed() && colorValueGreen == keyColor.getGreen() && colorValueBlue == keyColor.getBlue()) {
             useColorFadeOut = false;
         }

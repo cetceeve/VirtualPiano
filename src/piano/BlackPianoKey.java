@@ -7,7 +7,7 @@ import de.ur.mi.graphics.Color;
 
 public class BlackPianoKey extends PianoKey {
 
-    public BlackPianoKey(Note note, int x, int y, Synthesizer synthesizer) {
-        super(note, x, y, Configuration.BLACK_PIANO_KEY_SIZE_X, Configuration.BLACK_PIANO_KEY_SIZE_Y, Color.BLACK, synthesizer);
+    public BlackPianoKey(int x, int y, Synthesizer synthesizer) {
+        super(x, y, Configuration.BLACK_PIANO_KEY_SIZE_X, Configuration.BLACK_PIANO_KEY_SIZE_Y, Color.BLACK, synthesizer);
     }
 }

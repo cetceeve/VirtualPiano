@@ -8,6 +8,10 @@ import ui.UserInterface;
 
 import java.awt.event.KeyEvent;
 
+/*
+This is the main class.
+It holds the Piano, Recorder and UserInterface instances and catches all inputs
+ */
 public class MainApp extends GraphicsApp {
 
     private static final int FRAME_RATE = 30;

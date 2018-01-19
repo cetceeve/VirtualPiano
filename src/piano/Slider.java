@@ -5,47 +5,57 @@ import de.ur.mi.graphics.Color;
 import de.ur.mi.graphics.Rect;
 import ui.Drawable;
 
-public class Slider extends Rect implements Drawable {
+/*
+This is a visual elements to show the user which octave it can currently play with the keyboard.
+ */
+public class Slider extends Rect implements Drawable{
 
-    private int endPosition;
-    private int sliderPosition = Configuration.SLIDER_START_POSITION;
+    private int targetOctave = Configuration.SLIDER_START_OCTAVE;
+    private int targetPosValue;
     private int movementDirection = 0;
 
     public Slider() {
-        super(10 + (Configuration.SLIDER_WIDTH * Configuration.SLIDER_START_POSITION), Configuration.SLIDER_POSITION_Y, Configuration.SLIDER_WIDTH, Configuration.SLIDER_HEIGHT, Configuration.SLIDER_COLOR);
+        super(10 + (Configuration.SLIDER_WIDTH * Configuration.SLIDER_START_OCTAVE), Configuration.SLIDER_POSITION_Y, Configuration.SLIDER_WIDTH, Configuration.SLIDER_HEIGHT, Configuration.SLIDER_COLOR);
         this.setBorder(Color.BLACK, 1);
     }
 
+    /*
+    slider is animated to 'slide' to its target octave
+     */
     public void update() {
-        if (this.getX() != endPosition) {
+        if (this.getX() != targetPosValue) {
             this.move(Configuration.SLIDER_MOVEMENT_SPEED * movementDirection, 0);
         }
-        if (this.getX() == endPosition)
+        if (this.getX() == targetPosValue)
             movementDirection = 0;
 
     }
 
+    /*
+    (!)overloaded method
+     */
     public void moveRight() {
-        sliderPosition++;
-        endPosition = 10 + sliderPosition * Configuration.SLIDER_WIDTH;
-        movementDirection = 1;
-    }
-
-    public void moveRight(int targetPosition) {
-        sliderPosition = targetPosition;
-        endPosition = 10 + sliderPosition * Configuration.SLIDER_WIDTH;
+        targetOctave++;
+        targetPosValue = 10 + targetOctave * Configuration.SLIDER_WIDTH;
         movementDirection = 1;
     }
 
     public void moveLeft() {
-        sliderPosition--;
-        endPosition = 10 + sliderPosition * Configuration.SLIDER_WIDTH;
+        targetOctave--;
+        targetPosValue = 10 + targetOctave * Configuration.SLIDER_WIDTH;
         movementDirection = -1;
     }
 
-    public void moveLeft(int targetPosition) {
-        sliderPosition = targetPosition;
-        endPosition = 10 + sliderPosition * Configuration.SLIDER_WIDTH;
+    public void moveRight(int targetOctave) {
+        this.targetOctave = targetOctave;
+        targetPosValue = 10 + targetOctave * Configuration.SLIDER_WIDTH;
+        movementDirection = 1;
+    }
+
+
+    public void moveLeft(int targetOctave) {
+        this.targetOctave = targetOctave;
+        targetPosValue = 10 + targetOctave * Configuration.SLIDER_WIDTH;
         movementDirection = -1;
     }
 }
