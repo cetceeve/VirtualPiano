@@ -1,4 +1,4 @@
-package ui;
+package interfaces;
 
 public interface Drawable {
 

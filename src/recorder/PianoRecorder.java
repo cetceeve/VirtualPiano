@@ -2,11 +2,17 @@ package recorder;
 
 import constants.Configuration;
 import de.ur.mi.graphicsapp.GraphicsApp;
+import interfaces.Recorder;
 import piano.PianoKey;
 import ui.RecorderEventListener;
 
 import java.util.ArrayList;
 
+/*
+This class provides the functionality to record any instrument working with the synthesizer and RecorderDataPoint class.
+The Playback is done in a Background thread to make sure the application stays responsive.
+All UserInterface functions associated with the recorder are controlled from this class.
+ */
 public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener, RecorderInterfaceListener {
     private RecorderPlaybackThread recorderPlaybackThread;
     private ArrayList<RecorderDataPoint> recording;
@@ -14,20 +20,32 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener, 
     private boolean isRecording = false;
 
     public PianoRecorder(RecorderEventListener userInterface) {
-        this.userInterface = userInterface;
         GraphicsApp.println("Init Recorder");
+        this.userInterface = userInterface;
         recording = new ArrayList<>();
         GraphicsApp.println("Init Recorder Background Thread");
         recorderPlaybackThread = new RecorderPlaybackThread(this);
     }
 
+    /////////////////////////////////////////////////
+    /*
+    Recorder interface methods
+     */
     @Override
     public void saveDataPoint(PianoKey key, int velocity, long waitTime) {
-        RecorderDataPoint dataPoint = new RecorderDataPoint(key, velocity, waitTime);
+        recording.add(new RecorderDataPoint(key, velocity, waitTime));
         GraphicsApp.println("New RecorderDataPoint: " + key + " | " + velocity + " | " + waitTime);
-        recording.add(dataPoint);
     }
 
+    @Override
+    public boolean doRecording() {
+        return isRecording;
+    }
+
+    /////////////////////////////////////////////////
+    /*
+    RecorderPlaybackThreadListener methods
+     */
     @Override
     public ArrayList<RecorderDataPoint> getRecording() {
         return recording;
@@ -38,11 +56,10 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener, 
         userInterface.togglePlaybackButton();
     }
 
-    @Override
-    public boolean doRecording() {
-        return isRecording;
-    }
-
+    /////////////////////////////////////////////////
+    /*
+    RecorderInterfaceListener methods
+     */
     @Override
     public void toggleRecording() {
         if (isRecording) {
@@ -50,23 +67,6 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener, 
         } else {
             startRecording();
         }
-    }
-
-    private void startRecording() {
-        if (deleteRecording()) {
-            isRecording = true;
-            GraphicsApp.println("Start Recording");
-            userInterface.toggleRecordingButton();
-        }
-    }
-
-    private void stopRecording() {
-        if (!recording.isEmpty()) {
-            postprocessing();
-        }
-        isRecording = false;
-        userInterface.toggleRecordingButton();
-        GraphicsApp.println("Stop Recording");
     }
 
     @Override
@@ -89,14 +89,35 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener, 
         }
     }
 
+    /////////////////////////////////////////////////
+    private void startRecording() {
+        if (deleteRecording()) {
+            GraphicsApp.println("Start Recording");
+            isRecording = true;
+            userInterface.toggleRecordingButton();
+        }
+    }
+
+    private void stopRecording() {
+        GraphicsApp.println("Stop Recording");
+        if (!recording.isEmpty()) {
+            postprocessing();
+        }
+        isRecording = false;
+        userInterface.toggleRecordingButton();
+    }
+
+    /*
+    this methods starts the playback thread
+    if the thread has already run (State == TERMINATED) it creates a new thread overwriting the old one
+     */
     private void startPlayback() {
         if (!recording.isEmpty() && !isRecording && !recorderPlaybackThread.isAlive()) {
             GraphicsApp.println("Start Playback");
-            userInterface.togglePlaybackButton();
             try {
                 GraphicsApp.println("Recorder Playback Thread State: " + recorderPlaybackThread.getState());
                 if (recorderPlaybackThread.getState() == Thread.State.TERMINATED) {
-                    GraphicsApp.println("Init Background Thread");
+                    GraphicsApp.println("Init New Background Thread");
                     recorderPlaybackThread = new RecorderPlaybackThread(this);
                     GraphicsApp.println("Opening Background Thread");
                     recorderPlaybackThread.start();
@@ -112,9 +133,14 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener, 
                 }
                 e.printStackTrace();
             }
+            userInterface.togglePlaybackButton();
         }
     }
 
+    /*
+    the interrupt call stops the threads execution
+    the thread goes into State: TERMINATED
+     */
     private void stopPlayback() {
         GraphicsApp.println("Stop Playback");
         try {
@@ -129,6 +155,10 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener, 
     }
 
 
+    /////////////////////////////////////////////////
+    /*
+    thread to play back one recording
+     */
     private class RecorderPlaybackThread extends Thread {
         private RecorderPlaybackThreadListener threadListener;
 
@@ -136,6 +166,11 @@ public class PianoRecorder implements Recorder, RecorderPlaybackThreadListener, 
             this.threadListener = threadListener;
         }
 
+        /*
+        get the most recent recording and replay every note + visualisation
+        between playing the notes the thread waits the correct time
+        all necessary information comes from each dataPoint
+         */
         @Override
         public void run() {
             GraphicsApp.println("Background Thread Active");

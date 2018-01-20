@@ -1,6 +1,7 @@
 package ui;
 
 import constants.Configuration;
+import interfaces.RecorderButton;
 import recorder.RecorderInterfaceListener;
 
 public class DeleteButton extends Button implements RecorderButton {

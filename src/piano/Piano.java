@@ -6,8 +6,8 @@ import de.mi.ur.midi.Note;
 import de.mi.ur.midi.Synthesizer;
 import de.ur.mi.graphics.Compound;
 import de.ur.mi.graphicsapp.GraphicsApp;
-import recorder.Recorder;
-import ui.Drawable;
+import interfaces.Recorder;
+import interfaces.Drawable;
 
 import javax.sound.midi.MidiUnavailableException;
 import java.awt.event.KeyEvent;

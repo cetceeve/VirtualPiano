@@ -1,6 +1,8 @@
 package ui;
 
 import constants.Configuration;
+import interfaces.Drawable;
+import interfaces.RecorderButton;
 import recorder.RecorderInterfaceListener;
 
 import java.util.ArrayList;

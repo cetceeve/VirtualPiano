@@ -1,4 +1,4 @@
-package ui;
+package interfaces;
 
 import recorder.RecorderInterfaceListener;
 

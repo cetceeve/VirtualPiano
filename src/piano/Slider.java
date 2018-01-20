@@ -3,7 +3,7 @@ package piano;
 import constants.Configuration;
 import de.ur.mi.graphics.Color;
 import de.ur.mi.graphics.Rect;
-import ui.Drawable;
+import interfaces.Drawable;
 
 /*
 This is a visual elements to show the user which octave it can currently play with the keyboard.

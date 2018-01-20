@@ -2,6 +2,10 @@ package recorder;
 
 import piano.PianoKey;
 
+/*
+This class is a container to store information for the Recorder and Synthesiser class.
+In this case the class is specifically storing PianoKeys.
+ */
 public class RecorderDataPoint {
     private PianoKey key;
     private int velocity;
@@ -24,7 +28,9 @@ public class RecorderDataPoint {
     public long getWaitTime() {
         return waitTime;
     }
-
+    /*
+    used for postprocessing of a recording
+     */
     public void setWaitTime(long waitTime) {
         this.waitTime = waitTime;
     }

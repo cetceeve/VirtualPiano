@@ -1,6 +1,8 @@
 package ui;
 
 import de.ur.mi.graphics.Image;
+import interfaces.Clickable;
+import interfaces.Drawable;
 
 public class Button implements Clickable, Drawable {
     private Image representation;

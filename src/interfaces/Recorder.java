@@ -1,4 +1,4 @@
-package recorder;
+package interfaces;
 
 import piano.PianoKey;
 

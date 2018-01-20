@@ -2,8 +2,10 @@ package ui;
 
 import constants.Configuration;
 import de.ur.mi.graphics.Image;
+import interfaces.Clickable;
+import interfaces.Drawable;
 
-public class ControlsOverlay implements Drawable, Clickable{
+public class ControlsOverlay implements Drawable, Clickable {
     private Image repButton;
     private Image repOverlay;
     private boolean showOverlay = false;
