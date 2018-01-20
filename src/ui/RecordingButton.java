@@ -6,14 +6,14 @@ import recorder.RecorderInterfaceListener;
 
 public class RecordingButton extends Button implements RecorderButton {
     public RecordingButton(int posX, int posY, int size) {
-        super(posX, posY, size, Configuration.IMAGE_SOURCE_RECORDING_ON_BUTTON);
+        super(posX, posY, size, Configuration.RECORDING_BUTTON_IMAGE_START);
     }
 
     public void switchRepresentation() {
-        if (this.getRepresentation().equals(Configuration.IMAGE_SOURCE_RECORDING_ON_BUTTON)) {
-            this.changeRepresentation(Configuration.IMAGE_SOURCE_RECORDING_OFF_BUTTON);
+        if (this.getRepresentation().equals(Configuration.RECORDING_BUTTON_IMAGE_START)) {
+            this.changeRepresentation(Configuration.RECORDING_BUTTON_IMAGE_STOP);
         } else {
-            this.changeRepresentation(Configuration.IMAGE_SOURCE_RECORDING_ON_BUTTON);
+            this.changeRepresentation(Configuration.RECORDING_BUTTON_IMAGE_START);
         }
     }
 

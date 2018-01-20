@@ -73,7 +73,7 @@ public class UserInterface implements Drawable, RecorderEventListener {
     /////////////////////////////////////////////////
     private void createRecorderButtons() {
         recordingButton = new RecordingButton(Configuration.RECORDING_BUTTON_POSITION_X, Configuration.RECORDING_BUTTON_POSITION_Y, Configuration.BUTTON_STANDARD_SIZE);
-        playButton = new PlayButton(Configuration.PLAY_BUTTON_POSITION_X, Configuration.PLAY_BUTTON_POSITION_Y, Configuration.BUTTON_STANDARD_SIZE);
+        playButton = new PlayButton(Configuration.PLAYBACK_BUTTON_POSITION_X, Configuration.PLAYBACK_BUTTON_POSITION_Y, Configuration.BUTTON_STANDARD_SIZE);
         deleteButton = new DeleteButton(Configuration.DELETE_BUTTON_POSITION_X, Configuration.DELETE_BUTTON_POSITION_Y, Configuration.BUTTON_STANDARD_SIZE);
     }
 

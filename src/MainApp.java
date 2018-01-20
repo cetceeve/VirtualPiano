@@ -1,5 +1,4 @@
 import constants.Configuration;
-import de.ur.mi.graphics.Color;
 import de.ur.mi.graphicsapp.GraphicsApp;
 import piano.Piano;
 import processing.event.MouseEvent;
@@ -14,9 +13,6 @@ It holds the Piano, Recorder and UserInterface instances and catches all inputs
  */
 public class MainApp extends GraphicsApp {
 
-    private static final int FRAME_RATE = 30;
-    private static final int SMOOTH_LEVEL = 8;
-    private static final Color BACKGROUND_COLOR = Color.DARK_GRAY;
     private Piano piano;
     private PianoRecorder pianoRecorder;
     private UserInterface ui;
@@ -32,8 +28,8 @@ public class MainApp extends GraphicsApp {
 
     private void initCanvas() {
         size(Configuration.CANVAS_WIDTH, Configuration.CANVAS_HEIGHT);
-        frameRate(FRAME_RATE);
-        smooth(SMOOTH_LEVEL);
+        frameRate(Configuration.FRAME_RATE);
+        smooth(Configuration.SMOOTH_LEVEL);
     }
 
     private void initRecorder() {
@@ -50,7 +46,7 @@ public class MainApp extends GraphicsApp {
     }
 
     public void draw() {
-        background(BACKGROUND_COLOR);
+        background(Configuration.BACKGROUND_COLOR);
         piano.draw();
         ui.draw();
     }

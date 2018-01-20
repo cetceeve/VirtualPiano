@@ -1,7 +1,6 @@
 package piano;
 
 import constants.Configuration;
-import de.mi.ur.midi.Note;
 import de.mi.ur.midi.Synthesizer;
 import de.ur.mi.graphics.Color;
 

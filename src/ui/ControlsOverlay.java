@@ -17,8 +17,8 @@ public class ControlsOverlay implements Drawable, Clickable {
     private boolean showOverlay = false;
 
     public ControlsOverlay(int posX, int posY) {
-        repButton = new Image(posX, posY, Configuration.IMAGE_SOURCE_CONTROLS_BUTTON);
-        repOverlay = new Image(-1, 0, Configuration.IMAGE_SOURCE_CONTROLS_OVERLAY);
+        repButton = new Image(posX, posY, Configuration.CONTROLS_BUTTON_IMAGE);
+        repOverlay = new Image(-1, 0, Configuration.CONTROLS_OVERLAY_IMAGE);
     }
 
     @Override

@@ -23,7 +23,7 @@ public class Piano implements Drawable{
     private Slider slider;
     private ArrayList<PianoKey> virtualPiano;
     private ArrayList<Integer> pressedKeys;
-    private int currentOctave = Configuration.STARTING_OCTAVE;
+    private int currentOctave = Configuration.PIANO_STARTING_OCTAVE;
     private PianoKey currentKey;
     private Synthesizer synthesizer;
 
@@ -50,7 +50,7 @@ public class Piano implements Drawable{
     public void handleMouseInput(int mouseX, int mouseY) {
         currentKey = (PianoKey) pianoRepresentation.getObjectAt(mouseX, mouseY);
         if (currentKey != null) {
-            currentKey.setColor(Configuration.HIGHLIGHT_COLOR);
+            currentKey.setColor(Configuration.KEY_HIGHLIGHT_COLOR);
         }
     }
 
@@ -103,7 +103,7 @@ public class Piano implements Drawable{
                 Integer keyIndex = keyIndexTranslator(event);
                 if (keyIndex != null && !keyInUse(keyIndex)) {
                     virtualPiano.get(keyIndex).playNote(Configuration.VELOCITY_MAX);
-                    virtualPiano.get(keyIndex).setColor(Configuration.HIGHLIGHT_COLOR);
+                    virtualPiano.get(keyIndex).setColor(Configuration.KEY_HIGHLIGHT_COLOR);
                     pressedKeys.add(keyIndex);
                     if (recorder.doRecording()) {
                         recorder.saveDataPoint(virtualPiano.get(keyIndex), Configuration.VELOCITY_MAX, System.currentTimeMillis() - timeStamp);
