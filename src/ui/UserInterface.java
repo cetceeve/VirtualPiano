@@ -7,6 +7,9 @@ import recorder.RecorderInterfaceListener;
 
 import java.util.ArrayList;
 
+/*
+This class provides all user interface elements that are not connected to the piano itself (keys + slider).
+ */
 public class UserInterface implements Drawable, RecorderEventListener {
     private RecorderInterfaceListener recorderInterfaceListener;
     private ArrayList<RecorderButton> recorderButtons;
@@ -16,7 +19,7 @@ public class UserInterface implements Drawable, RecorderEventListener {
     private ControlsOverlay controlsOverlay;
 
     public UserInterface() {
-        createButtons();
+        createRecorderButtons();
         createRecorderButtonArrayList();
         controlsOverlay = new ControlsOverlay(Configuration.CONTROLS_OVERLAY_POSITION_X, Configuration.CONTROLS_OVERLAY_POSITION_Y);
     }
@@ -33,6 +36,26 @@ public class UserInterface implements Drawable, RecorderEventListener {
         controlsOverlay.draw();
     }
 
+    public void toggleControlsOverlay() {
+        controlsOverlay.toggleOverlay();
+    }
+
+    /////////////////////////////////////////////////
+    /*
+    RecorderEventListener methods
+    (used be the pianoRecorder to control the ui)
+     */
+    @Override
+    public void toggleRecordingButton() {
+        recordingButton.switchRepresentation();
+    }
+
+    @Override
+    public void togglePlaybackButton() {
+        playButton.switchRepresentation();
+    }
+
+    /////////////////////////////////////////////////
     public boolean handleMouseClick(double x, double y) {
         for (RecorderButton c : recorderButtons) {
             if (c.hitTest(x, y)) {
@@ -47,21 +70,8 @@ public class UserInterface implements Drawable, RecorderEventListener {
         return false;
     }
 
-    @Override
-    public void toggleRecordingButton() {
-        recordingButton.switchRepresentation();
-    }
-
-    @Override
-    public void togglePlaybackButton() {
-        playButton.switchRepresentation();
-    }
-
-    public void toggleControlsOverlay() {
-        controlsOverlay.toggleOverlay();
-    }
-
-    private void createButtons() {
+    /////////////////////////////////////////////////
+    private void createRecorderButtons() {
         recordingButton = new RecordingButton(Configuration.RECORDING_BUTTON_POSITION_X, Configuration.RECORDING_BUTTON_POSITION_Y, Configuration.BUTTON_STANDARD_SIZE);
         playButton = new PlayButton(Configuration.PLAY_BUTTON_POSITION_X, Configuration.PLAY_BUTTON_POSITION_Y, Configuration.BUTTON_STANDARD_SIZE);
         deleteButton = new DeleteButton(Configuration.DELETE_BUTTON_POSITION_X, Configuration.DELETE_BUTTON_POSITION_Y, Configuration.BUTTON_STANDARD_SIZE);

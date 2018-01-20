@@ -4,6 +4,9 @@ import de.ur.mi.graphics.Image;
 import interfaces.Clickable;
 import interfaces.Drawable;
 
+/*
+This is a class for buttons represented by an image.
+ */
 public class Button implements Clickable, Drawable {
     private Image representation;
     private String src;
@@ -13,6 +16,7 @@ public class Button implements Clickable, Drawable {
         this.src = src;
     }
 
+    @Override
     public void draw() {
         representation.draw();
     }
@@ -22,7 +26,6 @@ public class Button implements Clickable, Drawable {
         this.src = src;
     }
 
-    //TODO: this might not work!
     public String getRepresentation() {
         return src;
     }
