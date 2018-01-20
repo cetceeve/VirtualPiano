@@ -80,7 +80,7 @@ public final class Configuration {
     public static final int DELETE_BUTTON_POSITION_Y = 10;
     // controls button
     public static final String CONTROLS_BUTTON_IMAGE = "data/assets/controls_button.png";
-    public static final String CONTROLS_OVERLAY_IMAGE = "data/assets/controls_overlay.png";
+    public static final String CONTROLS_OVERLAY_IMAGE = "data/assets/controls_overlay_2.png";
     public static final int CONTROLS_OVERLAY_POSITION_X = 10;
     public static final int CONTROLS_OVERLAY_POSITION_Y = 15;
 

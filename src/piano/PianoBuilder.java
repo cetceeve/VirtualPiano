@@ -25,9 +25,7 @@ public class PianoBuilder {
 
     public void newPiano(int numOfOctaves) {
         GraphicsApp.println("Creating New Piano");
-        long timeStamp = System.currentTimeMillis();
         createPiano(numOfOctaves);
-        GraphicsApp.println("Piano Creation Complete in [millis]: " + ((System.currentTimeMillis() - timeStamp)));
     }
 
     public ArrayList<PianoKey> getVirtualPiano() {
